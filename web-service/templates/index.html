@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kalın Bağırsak Hastalık Teşhisi</title>
+    <link
+      href="{{ url_for('static', filename='images/HOSPİTAL.jpg') }}"
+      rel="icon"
+    />
+    <link
+      href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/a.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+
+
+  <body>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="{{ url_for('index',id=user.id) }}" class="logo d-flex align-items-center">
+          <span class="d-none d-lg-block">Kalın Bağırsak Hastalık Teşhisi</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+      </div>
+
+      <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+          <li class="nav-item dropdown pe-3">
+            {% if user %}
+            <a
+              class="nav-link nav-profile d-flex align-items-center pe-0"
+              href="#"
+              data-bs-toggle="dropdown"
+            >
+              <span class="d-none d-md-block dropdown-toggle ps-2"
+                >{{user.name}} {{user.surname}}</span
+              >
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+            >
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  href="/logout"
+                >
+                  <i class="bi bi-box-arrow-right"></i>Çıkış Yap
+                </a>
+              </li>
+            </ul>
+            {% else %}
+            <form method="POST">
+              <button type="submit">Giriş Yap</button>
+            </form>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+
+    <aside id="sidebar" class="sidebar">
+      {% if user %}
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#forms-nav"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+            <i class="bi bi-journal-text"></i><span>Kayıtlı Hastalar</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="forms-nav"
+            class="nav-content collapse "
+            data-bs-parent="#sidebar-nav"
+          >
+            <li>
+              <!-- <a href="{{ url_for('login') }}">
+                <i class="bi bi-circle"></i><span>Hasta Bilgileri</span>
+              </a> -->
+            </li>
+          </ul>
+        </li>
+      </ul>
+      {% endif %}
+    </aside>
+
+    <main id="main" class="main">
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Hasta Ara</h5>
+
+                <form method="post">
+                  <div class="row mb-3">
+                    <div class="col-sm-5">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="tcno"
+                        placeholder="TC No"
+                      />
+                    </div>
+                    <div class="col-sm-5">
+                      <button type="submit" class="btn btn-primary">
+                        Hasta Getir
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Hasta Bilgileri</h5>
+
+               
+                <form method="post" action = "/index/{{user.id}}"  enctype=multipart/form-data>
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-3 col-form-label">Hasta TC No</label>
+                  <div class="col-sm-6">
+                    {% if patient %}
+                    <input type="text" class="form-control" placeholder={{patient.tcno}}>
+                    {% endif %}
+                  </div>
+                </div>
+                  <div class="row mb-3">
+                  <label for="inputText" class="col-sm-3 col-form-label">Hasta Ad-Soyad</label>
+                  <div class="col-sm-6">
+                    {% if patient %}
+                    <input type="text" class="form-control" placeholder="{{patient.name}} {{patient.surname}}" >
+                    {% endif %}
+                  </div>
+
+                </div>
+                {% if diagnosis %}
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-3 col-form-label"
+                        >Teşhis Sonucu</label
+                      >
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" placeholder="{{diagnosis.result}}" >
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                
+                </form>
+                {% if  patient %}
+                <div class="col-sm-5">
+                  <button type="submit" onclick="window.location.href='/upload/{{user.id}},{{patient.id}}'" class="btn btn-primary" >
+                    Hastalık Teşhisini Yap
+                  </button>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; <strong><span>2022</span></strong>
+      </div>
+    </footer>
+    <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+  </body>
+
+              
+</html>
